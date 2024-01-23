@@ -139,3 +139,4 @@ models/artifacts
 *.mp4
 *.log
 *.jpg
+*.tar.gz
