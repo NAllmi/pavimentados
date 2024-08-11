@@ -197,7 +197,7 @@ class MultiImage_Processor(Config_Basic):
         len_imgs = img_obj.get_len()
         if video_output_file:
             altura, base = img_obj.get_altura_base()
-            fourcc = cv2.VideoWriter.fourcc(*"MP4V")
+            fourcc = cv2.VideoWriter.fourcc('F','M','P','4')
             video_output = cv2.VideoWriter(video_output_file, fourcc, 20.0, (base, altura))
         else:
             video_output = None

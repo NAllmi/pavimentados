@@ -82,15 +82,21 @@ Among the allowed GPS data sources we have:
 Once these elements are imported, the processor is instantiated as follows:
 
 ```
-models_path = Path("../models/artifacts")  # Path to downloaded model
+from pathlib import Path
+models_path = Path("./artifacts")  # Path to downloaded model
 ml_processor = MultiImage_Processor(artifacts_path=str(models_path))
 ```
 
 The workflow object is able to receive the instantiated processor, without it is not able to execute the workflow.
 
 ```
-# Create a workflow for images
-workflow = Workflow_Processor(route, image_source_type='image_folder', gps_source_type = 'image_folder')
+input_video_file = "sample.mp4"
+input_gps_file = "sample.log"
+
+# Create a workflow for videos
+workflow = Workflow_Processor(
+    input_video_file, image_source_type="video", gps_source_type="loc", gps_input=input_gps_file, adjust_gps=True
+)
 ```
 
 ```
@@ -103,11 +109,18 @@ workflow = Workflow_Processor(
 The last step is to execute the workflow:
 
 ```
-results = workflow.execute(ml_processor, video_output_file="./outputs/processed_video.mp4", batch_size=16)
+results = workflow.execute(ml_processor, video_output_file="processed_video.mp4", batch_size=16)
 ```
 
 The parameters `video_output_file` and `image_folder_output` are optional and are only to save output video or image 
 files along detections.
+
+```
+# Save results to outputs directory
+import pandas as pd
+for result_name in results.keys():
+    pd.DataFrame(results[result_name]).to_csv(f"{result_name}.csv")
+```
 
 In the `results` object you will find the following:
 
