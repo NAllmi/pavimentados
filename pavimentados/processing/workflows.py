@@ -1,3 +1,5 @@
+from typing import Union
+
 from pavimentados.analyzers.calculators import Results_Calculator as calculator
 from pavimentados.analyzers.gps_sources import GPS_Data_Loader
 from pavimentados.processing.processors import MultiImage_Processor
@@ -82,7 +84,7 @@ class Workflow_Processor:
         return_results: bool = True,
         video_output_file: str = None,
         image_folder_output: str = None,
-    ) -> None | dict[str, any]:
+    ) -> Union[None, dict[str, any]]:
         """Execute the workflow.
 
         Args:

@@ -45,8 +45,12 @@ To install you can use the following commands
 pip install pavimentados
 ```
 
-The next step is to download the model artifact and decompress it to any folder. For instance the `models` folder.
+The next step is to download the model artifact and decompress it to any folder.
 
+```
+wget -O models.tar.gz https://github.com/EL-BID/pavimentados/raw/feature/v0.32.0/models/model_20240807.tar.gz?download=
+tar -xzvf models.tar.gz
+```
 
 ## Quick Start
 ---
@@ -93,13 +97,6 @@ The workflow object is able to receive the instantiated processor, without it is
 input_video_file = "sample.mp4"
 input_gps_file = "sample.log"
 
-# Create a workflow for videos
-workflow = Workflow_Processor(
-    input_video_file, image_source_type="video", gps_source_type="loc", gps_input=input_gps_file, adjust_gps=True
-)
-```
-
-```
 # Create a workflow for videos
 workflow = Workflow_Processor(
     input_video_file, image_source_type="video", gps_source_type="loc", gps_input=input_gps_file, adjust_gps=True
