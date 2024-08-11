@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Unified config: all configurations in only one json file.
 - Documentation updated.
+- Siamese model upgraded to 128x128 detections.
 ### Added
 - Docstrings to some classes and methods.
 

@@ -10,8 +10,8 @@ if __name__ == "__main__":
     input_path = Path("./road_videos")
     models_path = Path("../models/artifacts")
 
-    input_video_file = input_path / "20230403M-F-P01.mp4"
-    input_gps_file = input_path / "20230403M-F-P01.log"
+    input_video_file = input_path / "sample.mp4"
+    input_gps_file = input_path / "sample.log"
 
     # Create processor
     ml_processor = MultiImage_Processor(artifacts_path=str(models_path))

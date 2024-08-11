@@ -117,6 +117,8 @@ In the `results` object you will find the following:
  4. signals_summary: DataFrame with all the information about the signals.
  5. raw_results: Raw results totals
 
+To see more detail about results please refer to [this page.](docs%2Fresults.md)
+
 
 ## Project structure
 ---

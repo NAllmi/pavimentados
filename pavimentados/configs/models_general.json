@@ -34,9 +34,9 @@
 	},
 
 	"siamese_model": {
-		"path": "siamese_model",
+		"path": "siamese_model/siamese_128",
 		"model_filename": "onnx_siamese_model.onnx",
 		"embeddings_filename": "embeddings_references.pickle",
-		"image_size": [64, 64, 3]
+		"image_size": [128, 128, 3]
 	}
 }

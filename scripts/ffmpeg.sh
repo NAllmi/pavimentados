@@ -1,5 +1,5 @@
 #/bin/sh
-video1=base.mp4 &&
+video1=$2.mp4 &&
 video2=$1.mp4 &&
 output=base_$1.mp4 &&
 text1="yolov3" &&
