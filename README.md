@@ -39,13 +39,13 @@ Some of the features available are:
 ## Instalation
 ---
 
-To install you can use the following commands
+To install you can use the following commands:
 
 ```
 pip install pavimentados
 ```
 
-The next step is to download the model artifact and decompress it to any folder.
+The next step is to download the model artifact and decompress it.
 
 ```
 wget -O models.tar.gz https://github.com/EL-BID/pavimentados/raw/feature/v0.32.0/models/model_20240807.tar.gz?download=
