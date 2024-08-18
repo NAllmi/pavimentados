@@ -11,8 +11,8 @@ pavimentados_path = Path(__file__).parent.parent
 class YoloV8Model(BaseModel):
     def __init__(
         self,
+        config: dict,
         device: str = "0",
-        config_file: str = pavimentados_path / "configs" / "models_general.json",
         model_config_key: str = "",
         artifacts_path: str = None,
     ):
@@ -20,8 +20,8 @@ class YoloV8Model(BaseModel):
         file, model configuration key, and artifacts path.
 
         Args:
+            config (str): Configuration
             device (str): The device to use for the model, default is "0".
-            config_file (str): The path to the configuration file, default is "configs/models_general.json".
             model_config_key (str): The key in the model's configuration file.
             artifacts_path (str): The path to the artifacts directory.
 
@@ -30,7 +30,7 @@ class YoloV8Model(BaseModel):
         """
         super().__init__()
         self.device = device
-        self.config = self.load_config(config_file)
+        self.config = config
 
         if artifacts_path:
             self.general_path = Path(artifacts_path)

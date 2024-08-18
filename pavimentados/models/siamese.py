@@ -12,17 +12,16 @@ pavimentados_path = Path(__file__).parent.parent
 class Siamese_Model(BaseModel):
     def __init__(
         self,
+        config: dict = None,
         device="0",
-        config_file=pavimentados_path / "configs" / "models_general.json",
         model_config_key: str = "",
         artifacts_path: str = None,
     ):
         """Initializes a new instance of the Siamese_Model class.
 
         Args:
+            config (dict): config dictionary.
             device (str, optional): The device to use for computations. Defaults to "0".
-            config_file (Path, optional): The path to the configuration file. Defaults to pavimentados_path / "configs"
-            / "models_general.json".
             model_config_key (str, optional): The key for the model configuration in the configuration file.
             Defaults to "".
             artifacts_path (str, optional): The path to the artifacts directory. Defaults to None.
@@ -41,7 +40,7 @@ class Siamese_Model(BaseModel):
         """
         super().__init__()
         self.device = device
-        self.config = self.load_config(config_file)
+        self.config = config
 
         if artifacts_path:
             self.general_path = Path(artifacts_path)
