@@ -157,7 +157,7 @@ class MultiImage_Processor(Config_Basic):
 
         config_file_default = pavimentados_path / "configs" / "models_general.json"
 
-        self.load_config(str(config_file_default), str(config_file))
+        self.load_config(config_file_default, config_file)
 
         self.processor = Image_Processor(
             yolo_device=self.yolo_device, siamese_device=self.siamese_device, artifacts_path=artifacts_path, config=self.config
