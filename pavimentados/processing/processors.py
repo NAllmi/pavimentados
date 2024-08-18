@@ -58,11 +58,11 @@ class Image_Processor:
     """Predicts the signals over frames."""
 
     def __init__(
-            self,
-            yolo_device: str = "0",
-            siamese_device: str = "0",
-            artifacts_path: str = None,
-            config: dict = None,
+        self,
+        yolo_device: str = "0",
+        siamese_device: str = "0",
+        artifacts_path: str = None,
+        config: dict = None,
     ):
         self.artifacts_path = artifacts_path
         self.yolo_device = yolo_device
@@ -86,16 +86,13 @@ class Image_Processor:
             None
         """
         self.yolov8_signal_model = YoloV8Model(
-            device=self.yolo_device, model_config_key="signal_model", artifacts_path=self.artifacts_path,
-            config=self.config
+            device=self.yolo_device, model_config_key="signal_model", artifacts_path=self.artifacts_path, config=self.config
         )
         self.yolov8_paviment_model = YoloV8Model(
-            device=self.yolo_device, model_config_key="paviment_model", artifacts_path=self.artifacts_path,
-            config=self.config
+            device=self.yolo_device, model_config_key="paviment_model", artifacts_path=self.artifacts_path, config=self.config
         )
         self.siamese_model = Siamese_Model(
-            device=self.siamese_device, model_config_key="siamese_model", artifacts_path=self.artifacts_path,
-            config=self.config
+            device=self.siamese_device, model_config_key="siamese_model", artifacts_path=self.artifacts_path, config=self.config
         )
 
     def crop_img(self, box: list[float], img: np.ndarray) -> np.ndarray:
@@ -108,10 +105,8 @@ class Image_Processor:
         Returns:
             np.ndarray: The cropped image.
         """
-        img_crop = img[int(box[1] * img.shape[0]): int(box[3] * img.shape[0]),
-                   int(box[0] * img.shape[1]): int(box[2] * img.shape[1])]
-        img_crop = cv2.resize(img_crop, tuple(self.siamese_model.image_size)[:2], interpolation=cv2.INTER_AREA).astype(
-            float) / 255
+        img_crop = img[int(box[1] * img.shape[0]) : int(box[3] * img.shape[0]), int(box[0] * img.shape[1]) : int(box[2] * img.shape[1])]
+        img_crop = cv2.resize(img_crop, tuple(self.siamese_model.image_size)[:2], interpolation=cv2.INTER_AREA).astype(float) / 255
         return img_crop
 
     def predict_signal_state_single(self, image: np.ndarray, box: list[float]):
@@ -150,11 +145,11 @@ class Image_Processor:
 
 class MultiImage_Processor(Config_Basic):
     def __init__(
-            self,
-            config_file: Path = None,
-            yolo_device: str = "0",
-            siamese_device: str = "0",
-            artifacts_path=None,
+        self,
+        config_file: Path = None,
+        yolo_device: str = "0",
+        siamese_device: str = "0",
+        artifacts_path=None,
     ):
         super().__init__()
         self.yolo_device = yolo_device
@@ -165,25 +160,20 @@ class MultiImage_Processor(Config_Basic):
         self.load_config(str(config_file_default), str(config_file))
 
         self.processor = Image_Processor(
-            yolo_device=self.yolo_device,
-            siamese_device=self.siamese_device,
-            artifacts_path=artifacts_path,
-            config=self.config
+            yolo_device=self.yolo_device, siamese_device=self.siamese_device, artifacts_path=artifacts_path, config=self.config
         )
 
     def _process_batch(self, img_batch, video_output=None, image_folder_output=None):
         boxes_pav, scores_pav, classes_pav = self.processor.yolov8_paviment_model.predict(img_batch)
         boxes_signal, scores_signal, classes_signal = self.processor.yolov8_signal_model.predict(img_batch)
-        final_signal_classes, signal_base_predictions, state_predictions = self.processor.predict_signal_state(
-            img_batch, boxes_signal)
+        final_signal_classes, signal_base_predictions, state_predictions = self.processor.predict_signal_state(img_batch, boxes_signal)
 
         if video_output or image_folder_output:
             j = 0
             for img in img_batch:
                 img = img.astype("uint8")
                 img = draw_outputs(
-                    img, ([boxes_pav[j]], [scores_pav[j]], [classes_pav[j]]),
-                    self.processor.yolov8_paviment_model.classes_names
+                    img, ([boxes_pav[j]], [scores_pav[j]], [classes_pav[j]]), self.processor.yolov8_paviment_model.classes_names
                 )
                 img = draw_outputs(
                     img,
@@ -214,7 +204,7 @@ class MultiImage_Processor(Config_Basic):
         len_imgs = img_obj.get_len()
         if video_output_file:
             altura, base = img_obj.get_altura_base()
-            fourcc = cv2.VideoWriter.fourcc('m', 'p', '4', 'v')
+            fourcc = cv2.VideoWriter.fourcc("m", "p", "4", "v")
             video_output = cv2.VideoWriter(video_output_file, fourcc, 20.0, (base, altura))
         else:
             video_output = None
@@ -223,8 +213,7 @@ class MultiImage_Processor(Config_Basic):
             tqdm(
                 map(
                     lambda x: self._process_batch(
-                        img_obj.get_batch(x, batch_size), video_output=video_output,
-                        image_folder_output=image_folder_output
+                        img_obj.get_batch(x, batch_size), video_output=video_output, image_folder_output=image_folder_output
                     ),
                     [offset for offset in range(0, len_imgs, batch_size)],
                 ),
@@ -240,8 +229,7 @@ class MultiImage_Processor(Config_Basic):
             "classes_pav": sum(results[4], []),
             "classes_signal": sum(results[5], []),
             "final_pav_clases": [
-                [self.processor.yolov8_paviment_model.classes_idx_names.get(elem, "<UNK>") for elem in item] for item in
-                sum(results[4], [])
+                [self.processor.yolov8_paviment_model.classes_idx_names.get(elem, "<UNK>") for elem in item] for item in sum(results[4], [])
             ],
             "final_signal_classes": sum(results[6], []),
             "signal_base_predictions": sum(results[7], []),
@@ -251,7 +239,6 @@ class MultiImage_Processor(Config_Basic):
     def process_folder(self, folder, batch_size=8):
         folder = Path(folder)
         image_list = list(
-            filter(lambda x: str(x).lower().split(".")[-1] in self.config["images_allowed"],
-                   map(lambda x: folder / x, os.listdir(folder)))
+            filter(lambda x: str(x).lower().split(".")[-1] in self.config["images_allowed"], map(lambda x: folder / x, os.listdir(folder)))
         )
         return self.process_images_group(image_list)
